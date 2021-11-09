@@ -1,0 +1,41 @@
+version: '3'
+services:
+  langridchat:
+    build: ./LangridChat
+    container_name: langrid_chat
+    volumes:
+      - ./LangridChat:/var/www
+    ports:
+      - "3031"
+    links:
+      - redis
+    environment:
+      TZ: "Asia/Tokyo"
+    extra_hosts:
+      - "langrid.org:10.40.34.3"
+
+
+  nginx:
+    build: ./LangridChatUI
+    container_name: langrid_nginx
+    ports:
+      - "51471:80"
+      - "51472:8000"
+    volumes:
+      - ./LangridChatUI/nginx.conf:/etc/nginx/nginx.conf
+      # nginxのログを./nginx/log に出力する
+      - ./LangridChatUI/log:/var/log/nginxf
+      # DjangoのstaticをDocker環境に移す
+      - ./LangridChat/static:/var/www/static
+      - ./LangridChatUI:/var/app
+      - ./LangridChatUI/build:/var/app/build/
+    links:
+      - langridchat
+    environment:
+      TZ: "Asia/Tokyo"
+
+  redis:
+    image: redis
+    container_name: langrid_redis
+    ports:
+      - 51479:6379
