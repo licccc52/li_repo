@@ -1,0 +1,11 @@
+channels==2.4.0
+Django==3.1
+ja_sentence_segmenter==0.0.2
+joblib==1.0.1
+networkx==2.5
+nltk==3.5
+numpy==1.20.3
+pysummarization==1.1.7
+spacy==3.0.6
+suds_jurko==0.6
+tabulate==0.8.9
